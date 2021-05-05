@@ -3,7 +3,7 @@
 #include "chess.h"
 #include <QBrush>
 
-extern Game *game;
+
 extern Chess *chess;
 
 int Checker::getXPos() const
@@ -29,6 +29,21 @@ void Checker::setYPos(int value)
 bool Checker::operator==(Checker *second)
 {
     return xPos == second->xPos && yPos == second->yPos;
+}
+
+Checker::~Checker()
+{
+    delete chessPiece;
+}
+
+QString Checker::getName() const
+{
+    return name;
+}
+
+void Checker::setName(const QString &value)
+{
+    name = value;
 }
 
 Checker::Checker(QGraphicsItem *parent){
@@ -57,53 +72,80 @@ Checker::Checker(int xPos, int yPos, const QColor& color, QGraphicsItem *parent)
 void Checker::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     //emit clicked();
-    std::cout << "hey, i was clicked, my pos: " << xPos << ", " << yPos << std::endl;
+    QString moveNotation = "";
+
+    std::cout << "hey, i was clicked, my pos: " << xPos << ", " << yPos << " and my name: " << name.toUtf8().constData() << std::endl;
     // theres no piece chosen and it is this color turn; nullptr tells that it is first click to chose piece
-    if( !game->getPieceToPlace() && this->getChessPiece() && this->getChessPiece()->getColor() == game->getWhosTurn() ){
-        game->setPieceToPlace(this->getChessPiece());
-        game->setOriginChecker(this);
+    if( !chess->getPieceToPlace() && this->getChessPiece() && this->getChessPiece()->getColor() == chess->getWhosTurn() ){
+        chess->setPieceToPlace(this->getChessPiece());
+        chess->setOriginChecker(this);
         return;     // end to require second click
     }
     // piece to place is set, the origin of piece too, so check if i can move it
-    else if ( game->getPieceToPlace() && game->getOriginChecker() && game->getPieceToPlace()->getColor() == game->getWhosTurn()
+    else if ( chess->getPieceToPlace() && chess->getOriginChecker() && chess->getPieceToPlace()->getColor() == chess->getWhosTurn()
               && !this->getChessPiece() /* i am moving piece to free checker */){
-        this->setChessPiece(game->getPieceToPlace());
-        game->getOriginChecker()->setChessPiece(nullptr);
+        moveNotation.append(chess->getPieceToPlace()->getName());
+        moveNotation.append(this->getName());
+        moveNotation.append('\n');
+        chess->getGameMovesText()->append(moveNotation);
+        chess->setGameMovesTextField();
+
+        this->setChessPiece(chess->getPieceToPlace());
+        chess->getOriginChecker()->setChessPiece(nullptr);
         this->chessPiece->setOffset(this->getXPos() * SCALE, this->getYPos() * SCALE);
-        game->setPieceToPlace(nullptr);
-        game->setOriginChecker(nullptr);
-        game->setWhosTurn(!game->getWhosTurn());
-        game->setWhosTurnText();
+        chess->setPieceToPlace(nullptr);
+        chess->setOriginChecker(nullptr);
+        chess->setWhosTurn(!chess->getWhosTurn());
+        chess->setWhosTurnText();
+
         return;
     }
     // same as previous, but i am placing piece to checker already consisting a piece
-    else if ( game->getPieceToPlace() && game->getOriginChecker() && game->getPieceToPlace()->getColor() == game->getWhosTurn()
-              && this->getChessPiece() && this != game->getOriginChecker()/* the checker i want to move my piece is not free and it is not the origin checker*/){
+    else if ( chess->getPieceToPlace() && chess->getOriginChecker() && chess->getPieceToPlace()->getColor() == chess->getWhosTurn()
+              && this->getChessPiece() && this != chess->getOriginChecker()/* the checker i want to move my piece is not free and it is not the origin checker*/){
         // i am trying to attack enemy piece
-        if( this->getChessPiece()->getColor() != game->getPieceToPlace()->getColor() ){
-            game->scene->removeItem(this->getChessPiece());     // remove attacked piece from scene
+        if( this->getChessPiece()->getColor() != chess->getPieceToPlace()->getColor() ){
+            moveNotation.append(chess->getPieceToPlace()->getName());
+            moveNotation.append('x');
+            moveNotation.append(this->getName());
+            moveNotation.append('\n');
+            chess->getGameMovesText()->append(moveNotation);
+            chess->setGameMovesTextField();
+
+            chess->getBoardView()->scene()->removeItem(this->getChessPiece());     // remove attacked piece from scene
             delete this->getChessPiece();                       // delete attacked piece object from heap
-            this->setChessPiece(game->getPieceToPlace());       // change checker's pointer to piece that attacked
+            this->setChessPiece(chess->getPieceToPlace());       // change checker's pointer to piece that attacked
             this->getChessPiece()->setOffset(this->getXPos() * SCALE, this->getYPos() * SCALE);     // move winning piece to new checker
-            game->getOriginChecker()->setChessPiece(nullptr);   // removing reference from previous checker
-            game->setOriginChecker(nullptr);                    // and preparing next move
-            game->setPieceToPlace(nullptr);
-            game->setWhosTurn(!game->getWhosTurn());
-            game->setWhosTurnText();
+            chess->getOriginChecker()->setChessPiece(nullptr);   // removing reference from previous checker
+            chess->setOriginChecker(nullptr);                    // and preparing next move
+            chess->setPieceToPlace(nullptr);
+            chess->setWhosTurn(!chess->getWhosTurn());
+            chess->setWhosTurnText();
             return;
         }
     }
     // leave piece on an origin checker
-    else if ( game->getPieceToPlace() && game->getOriginChecker() && game->getPieceToPlace()->getColor() == game->getWhosTurn()
-                  && this->getXPos() == game->getOriginChecker()->getXPos() && this->getYPos() == game->getOriginChecker()->getYPos() /* i picked origin checker again, so i leave piece in peace :D */){
+    else if ( chess->getPieceToPlace() && chess->getOriginChecker() && chess->getPieceToPlace()->getColor() == chess->getWhosTurn()
+                  && this->getXPos() == chess->getOriginChecker()->getXPos() && this->getYPos() == chess->getOriginChecker()->getYPos() /* i picked origin checker again, so i leave piece in peace :D */){
         std::cout << "puts(weszlo!);" << std::endl;
-        game->setPieceToPlace(nullptr);
-        game->setOriginChecker(nullptr);
+        chess->setPieceToPlace(nullptr);
+        chess->setOriginChecker(nullptr);
         this->getChessPiece()->setOffset(this->getXPos() * SCALE, this->getYPos() * SCALE);
         return;
     }
 }
 
+
+/*
+void Checker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+    std::cout << "jestem w evencie checker move mouse" << std::endl;
+    if (chess->getPieceToPlace()){
+        chess->getPieceToPlace()->setOffset( event->pos().x() - 30, event->pos().y() - 30);
+    }
+    return;
+}
+*/
 
 void Checker::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>1024</width>
+    <height>720</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,15 +23,21 @@
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
      </widget>
     </item>
     <item>
-     <widget class="QGraphicsView" name="graphicsView">
+     <widget class="QGraphicsView" name="textView">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
         <horstretch>1</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
+      </property>
+      <property name="sizeAdjustPolicy">
+       <enum>QAbstractScrollArea::AdjustToContents</enum>
       </property>
      </widget>
     </item>
@@ -42,20 +48,20 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>1024</width>
      <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_Gra">
     <property name="title">
-     <string>&amp;Gra</string>
+     <string>&amp;Game</string>
     </property>
-    <addaction name="actionNowa_gra"/>
-    <addaction name="actionZapisz_parti"/>
-    <addaction name="actionCofnij"/>
-    <addaction name="actionPowt_rz"/>
+    <addaction name="actionNewGame"/>
+    <addaction name="actionSaveMoves"/>
+    <addaction name="actionUndo"/>
+    <addaction name="actionRedo"/>
     <addaction name="separator"/>
-    <addaction name="actionZako_cz"/>
+    <addaction name="actionQuit"/>
    </widget>
    <addaction name="menu_Gra"/>
   </widget>
@@ -70,58 +76,42 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionCofnij"/>
-   <addaction name="actionPowt_rz"/>
+   <addaction name="actionUndo"/>
+   <addaction name="actionRedo"/>
   </widget>
-  <action name="actionNowa_gra">
+  <action name="actionNewGame">
    <property name="text">
-    <string>Nowa gra</string>
+    <string>New game</string>
    </property>
   </action>
-  <action name="actionZapisz_parti">
+  <action name="actionSaveMoves">
    <property name="text">
-    <string>Zapisz partię</string>
+    <string>Save moves</string>
    </property>
   </action>
-  <action name="actionZako_cz">
+  <action name="actionQuit">
    <property name="text">
-    <string>Zakończ</string>
+    <string>Quit game</string>
    </property>
   </action>
-  <action name="actionCofnij">
+  <action name="actionUndo">
    <property name="text">
-    <string>Cofnij</string>
+    <string>Undo</string>
    </property>
   </action>
-  <action name="actionPowt_rz">
+  <action name="actionRedo">
    <property name="text">
-    <string>Powtórz</string>
+    <string>Redo</string>
    </property>
   </action>
  </widget>
  <resources/>
  <connections>
   <connection>
-   <sender>actionZako_cz</sender>
+   <sender>actionQuit</sender>
    <signal>triggered()</signal>
    <receiver>Chess</receiver>
    <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>399</x>
-     <y>299</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionNowa_gra</sender>
-   <signal>triggered()</signal>
-   <receiver>Chess</receiver>
-   <slot>repaint()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>

@@ -44,6 +44,16 @@ void ChessPiece::setYPos(int value)
     yPos = value;
 }
 
+QString ChessPiece::getName() const
+{
+    return name;
+}
+
+void ChessPiece::setName(const QString &value)
+{
+    name = value;
+}
+
 ChessPiece::ChessPiece()
 {
     
@@ -53,6 +63,7 @@ ChessPiece::ChessPiece()
 
 Queen::Queen(bool color, int xPos, int yPos)
 {
+    this->name.append(QUEEN);
     this->xPos = xPos;
     this->yPos = yPos;
     this->color = color;
@@ -62,6 +73,8 @@ Queen::Queen(bool color, int xPos, int yPos)
         this->imagePath = QString(":/images/queen_black.svg");
     this->setPixmap(QPixmap(this->imagePath));
     this->setOffset(xPos * SCALE, yPos * SCALE);
+
+    //std::cout << "hey, i am queen and i have " << this->name.toUtf8().constData() << " name!" << std::endl;
 }
 
 void Queen::possibleMoves()
@@ -71,6 +84,7 @@ void Queen::possibleMoves()
 
 King::King(bool color, int xPos, int yPos)
 {
+    this->name.append(KING);
     this->xPos = xPos;
     this->yPos = yPos;
     this->color = color;
@@ -89,6 +103,7 @@ void King::possibleMoves()
 
 Bishop::Bishop(bool color, int xPos, int yPos)
 {
+    this->name.append(BISHOP);
     this->xPos = xPos;
     this->yPos = yPos;
     this->color = color;
@@ -107,6 +122,7 @@ void Bishop::possibleMoves()
 
 Knight::Knight(bool color, int xPos, int yPos)
 {
+    this->name.append(KNIGHT);
     this->xPos = xPos;
     this->yPos = yPos;
     this->color = color;
@@ -125,6 +141,7 @@ void Knight::possibleMoves()
 
 Rook::Rook(bool color, int xPos, int yPos)
 {
+    this->name.append(ROOK);
     this->xPos = xPos;
     this->yPos = yPos;
     this->color = color;

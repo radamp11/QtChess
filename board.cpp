@@ -15,6 +15,7 @@ void Board::initBoard()
 {
     QColor dark(143, 87, 54);
     QColor light(226, 184, 126);
+    char letterField = 'a';
     for(int i = 1; i <= 8; ++i){
         for(int j = 1; j <= 8; ++j){
             Checker *checker;
@@ -50,13 +51,20 @@ void Board::initBoard()
             else if ( (i == 5) && j == 8 )
                 checker->setChessPiece(new King(true, checker->getXPos(), checker->getYPos()));
 
+            checker->setName(QString(letterField + QString::number(9 - j)));
+            //std::string checkName = checker->getName().toUtf8().constData();
+
+            //std::cout << "ustawione nazwa pola: " << checkName << std::endl;
             checkers.append(checker);
+
         }
+        letterField++;
     }
 }
 
 void Board::resetBoard()
 {
-
-    this->initBoard();
+    checkers.clear();
+    initBoard();
 }
+

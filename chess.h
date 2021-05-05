@@ -1,9 +1,10 @@
-#ifndef CHESS_H
+﻿#ifndef CHESS_H
 #define CHESS_H
 
 #include <QMainWindow>
 #include <QGraphicsScene>
-#include <QMouseEvent>
+#include <QGraphicsSceneMouseEvent>
+#include <QDebug>
 #include "button.h"
 #include "board.h"
 
@@ -17,28 +18,28 @@ class Chess : public QMainWindow
     Board* board;
     bool whosTurn;  // true - white, false - black
     QGraphicsTextItem *whosTurnText;
+    QString *gameMovesText;
+    QGraphicsTextItem *gameMovesTextField;
     ChessPiece *pieceToPlace;
     Checker *originChecker;
+
+    void addBoardToScene();
 
 public:
     Chess(QWidget *parent = nullptr);
     ~Chess();
 
-    //virtual void paintEvent(QPaintEvent *event);
-
-    Board *getBoard() const;
-    void setBoard(Board *value);
-
     void displayMainMenu();
-    void pickUpPiece(ChessPiece *chessPiece);
-
-    //events
-    void mouseMoveEvent(QMouseEvent *event);
 
     //getters and setters
     bool getWhosTurn() const;
     void setWhosTurn(bool val);
     void setWhosTurnText();
+
+    Board *getBoard() const;
+    void setBoard(Board *value);
+
+    QGraphicsView *getBoardView();
 
     ChessPiece *getPieceToPlace() const;
     void setPieceToPlace(ChessPiece *value);
@@ -46,8 +47,16 @@ public:
     Checker *getOriginChecker() const;
     void setOriginChecker(Checker *value);
 
+    QGraphicsTextItem *getGameMovesTextField() const;
+    void setGameMovesTextField();
+
+    QString *getGameMovesText() const;
+    void setGameMovesText(QString *value);
+
 public slots:
     void start();
+    void newGame();
+    void saveGame();
 
 private:
     Ui::Chess *ui;

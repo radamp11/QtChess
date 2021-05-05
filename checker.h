@@ -3,6 +3,7 @@
 
 #include <QGraphicsRectItem>
 #include <QGraphicsSceneMouseEvent>
+#include <QMouseEvent>
 #include <iostream>
 #include "chesspiece.h"
 
@@ -15,6 +16,7 @@ class Checker : public QObject, public QGraphicsRectItem
     ChessPiece *chessPiece;
     QColor color;
     int xPos, yPos;
+    QString name;
 
 public:
     Checker(QGraphicsItem *parent = nullptr);
@@ -25,9 +27,8 @@ public:
     void setChessPiece(ChessPiece *piece) { chessPiece = piece; }
     void setColor(QColor newColor){ color = newColor; }
 
-    //void paint(QPainter *painter, QStyleOptionGraphicsItem *option, QWidget *widget);
-
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    //void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
 
@@ -38,6 +39,11 @@ public:
     void setYPos(int value);
 
     bool operator==(Checker *second);
+
+    ~Checker();
+
+    QString getName() const;
+    void setName(const QString &value);
 
 signals:
     void clicked();

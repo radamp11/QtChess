@@ -6,6 +6,11 @@
 #include <QGraphicsPixmapItem>
 #include <QGraphicsSceneMouseEvent>
 
+const char KING = 'K';
+const char QUEEN = 'Q';
+const char BISHOP = 'B';
+const char KNIGHT = 'N';
+const char ROOK = 'R';
 
 class ChessPiece : public QGraphicsPixmapItem
 {
@@ -14,6 +19,7 @@ protected:
     int yPos;
     bool color;     // white - true, black - false
     QString imagePath;
+    QString name;
     //Checker *currentChecker;
 public:
     ChessPiece();
@@ -34,8 +40,8 @@ public:
     int getYPos() const;
     void setYPos(int value);
 
-    //Checker *getCurrentChecker() const;
-    //void setCurrentChecker(Checker *value);
+    QString getName() const;
+    void setName(const QString &value);
 
 signals:
     //void pickMe();
