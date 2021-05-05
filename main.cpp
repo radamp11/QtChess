@@ -1,5 +1,4 @@
 #include "chess.h"
-#include "dialog.h"
 
 #include <QApplication>
 

@@ -152,5 +152,3 @@ void Checker::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
     brush.setColor(this->color);
     setBrush(brush);
 }
-
-
