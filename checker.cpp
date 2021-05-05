@@ -1,8 +1,7 @@
 #include "checker.h"
-#include "game.h"
 #include "chess.h"
 #include <QBrush>
-
+#include <QGraphicsView>
 
 extern Chess *chess;
 
@@ -24,11 +23,6 @@ int Checker::getYPos() const
 void Checker::setYPos(int value)
 {
     yPos = value;
-}
-
-bool Checker::operator==(Checker *second)
-{
-    return xPos == second->xPos && yPos == second->yPos;
 }
 
 Checker::~Checker()
@@ -66,7 +60,6 @@ Checker::Checker(int xPos, int yPos, const QColor& color, QGraphicsItem *parent)
     setBrush(brush);
 
     setAcceptHoverEvents(true);
-
 }
 
 void Checker::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -74,7 +67,7 @@ void Checker::mousePressEvent(QGraphicsSceneMouseEvent *event)
     //emit clicked();
     QString moveNotation = "";
 
-    std::cout << "hey, i was clicked, my pos: " << xPos << ", " << yPos << " and my name: " << name.toUtf8().constData() << std::endl;
+    //std::cout << "hey, i was clicked, my pos: " << xPos << ", " << yPos << " and my name: " << name.toUtf8().constData() << std::endl;
     // theres no piece chosen and it is this color turn; nullptr tells that it is first click to chose piece
     if( !chess->getPieceToPlace() && this->getChessPiece() && this->getChessPiece()->getColor() == chess->getWhosTurn() ){
         chess->setPieceToPlace(this->getChessPiece());
@@ -84,6 +77,10 @@ void Checker::mousePressEvent(QGraphicsSceneMouseEvent *event)
     // piece to place is set, the origin of piece too, so check if i can move it
     else if ( chess->getPieceToPlace() && chess->getOriginChecker() && chess->getPieceToPlace()->getColor() == chess->getWhosTurn()
               && !this->getChessPiece() /* i am moving piece to free checker */){
+        if(chess->getWhosTurn())
+            moveNotation.append("w: ");
+        else
+            moveNotation.append("b: ");
         moveNotation.append(chess->getPieceToPlace()->getName());
         moveNotation.append(this->getName());
         moveNotation.append('\n');
@@ -105,6 +102,10 @@ void Checker::mousePressEvent(QGraphicsSceneMouseEvent *event)
               && this->getChessPiece() && this != chess->getOriginChecker()/* the checker i want to move my piece is not free and it is not the origin checker*/){
         // i am trying to attack enemy piece
         if( this->getChessPiece()->getColor() != chess->getPieceToPlace()->getColor() ){
+            if(chess->getWhosTurn())
+                moveNotation.append("w: ");
+            else
+                moveNotation.append("b: ");
             moveNotation.append(chess->getPieceToPlace()->getName());
             moveNotation.append('x');
             moveNotation.append(this->getName());
@@ -134,18 +135,6 @@ void Checker::mousePressEvent(QGraphicsSceneMouseEvent *event)
         return;
     }
 }
-
-
-/*
-void Checker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
-{
-    std::cout << "jestem w evencie checker move mouse" << std::endl;
-    if (chess->getPieceToPlace()){
-        chess->getPieceToPlace()->setOffset( event->pos().x() - 30, event->pos().y() - 30);
-    }
-    return;
-}
-*/
 
 void Checker::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {

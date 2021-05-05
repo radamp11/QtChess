@@ -20,13 +20,10 @@ protected:
     bool color;     // white - true, black - false
     QString imagePath;
     QString name;
-    //Checker *currentChecker;
+
 public:
     ChessPiece();
     virtual void possibleMoves() = 0;
-
-    // events
-    //void mousePressedEvent(QGraphicsSceneMouseEvent *event);
 
     // getters and setters
     QString getImagePath() const;
@@ -42,9 +39,6 @@ public:
 
     QString getName() const;
     void setName(const QString &value);
-
-signals:
-    //void pickMe();
 };
 
 //-----------------------------------------------

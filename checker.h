@@ -22,15 +22,12 @@ public:
     Checker(QGraphicsItem *parent = nullptr);
     Checker(int xPos, int yPos, const QColor& color, QGraphicsItem *parent = nullptr);
 
-    ChessPiece* getChessPiece(){ return chessPiece; }
-
-    void setChessPiece(ChessPiece *piece) { chessPiece = piece; }
-    void setColor(QColor newColor){ color = newColor; }
-
+    // events
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
-    //void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
+
+    // getters and setters
 
     int getXPos() const;
     void setXPos(int value);
@@ -38,12 +35,15 @@ public:
     int getYPos() const;
     void setYPos(int value);
 
-    bool operator==(Checker *second);
-
-    ~Checker();
-
     QString getName() const;
     void setName(const QString &value);
+
+    ChessPiece* getChessPiece(){ return chessPiece; }
+    void setChessPiece(ChessPiece *piece) { chessPiece = piece; }
+
+    void setColor(QColor newColor){ color = newColor; }
+
+    ~Checker();
 
 signals:
     void clicked();

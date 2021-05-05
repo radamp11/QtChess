@@ -1,11 +1,8 @@
 #include <QRectF>
 #include <iostream>
-#include <QInputDialog>
 #include "chess.h"
 #include "ui_chess.h"
-#include "game.h"
 
-extern Game *game;
 
 Board *Chess::getBoard() const
 {
@@ -41,17 +38,7 @@ void Chess::displayMainMenu()
     connect(quitButton, SIGNAL(clicked()), this, SLOT(close()));
     ui->boardView->scene()->addItem(quitButton);
 }
-/*
-void Chess::mouseMoveEvent(QMouseEvent *event)
-{
 
-    std::cout << "jestem w evencie chess" << std::endl;
-    if (pieceToPlace){
-        pieceToPlace->setOffset( event->x() - 30, event->y() - 30);
-    }
-    return;
-}
-*/
 
 bool Chess::getWhosTurn() const
 {
@@ -84,13 +71,13 @@ void Chess::start()
     ui->boardView->scene()->clear();
 
     setWhosTurnText();
-    whosTurnText->setPos(getBoardView()->rect().width()/2, 5);
+    whosTurnText->setPos(getBoardView()->rect().width()/2 - whosTurnText->boundingRect().width()/2, 5);
     ui->boardView->scene()->addItem(whosTurnText);
 
     board = new Board();
     board->initBoard();
     addBoardToScene();
-    //connect( ui->actionNewGame, SIGNAL(trigerred()), this, SLOT(newGame()));
+
 }
 
 void Chess::newGame()
@@ -105,7 +92,7 @@ void Chess::newGame()
 
     whosTurn = true;
     setWhosTurnText();
-    whosTurnText->setPos(getBoardView()->rect().width()/2, 5);
+    whosTurnText->setPos(getBoardView()->rect().width()/2 - whosTurnText->boundingRect().width()/2, 5);
     getBoardView()->scene()->addItem(whosTurnText);
 
     board->resetBoard();
@@ -114,9 +101,7 @@ void Chess::newGame()
 
 void Chess::saveGame()
 {
-    //QInputDialog dialogWindow = new QInputDialog();
-    //QString fileName = QInputDialog::getText()
-    std::cout << "jestem w funkcji saveGame" << std::endl;
+    //std::cout << "jestem w funkcji saveGame" << std::endl;
     QString fileName = "../gameMoves.txt";
     QFile outFile(fileName);
 
@@ -124,7 +109,7 @@ void Chess::saveGame()
         qDebug() << "could not open this file";
         return;
     }
-    std::cout << "i otworzyłem plik" << std::endl;
+    //std::cout << "i otworzyłem plik" << std::endl;
     outFile.write(gameMovesText->toUtf8());
     outFile.close();
 }
@@ -202,7 +187,6 @@ Chess::Chess(QWidget *parent)
     gameMovesText = new QString();
     gameMovesTextField = new QGraphicsTextItem();
     gameMovesTextField->setFont(QFont("helvetica", 12));
-    //gameMovesText->setPos(50, 50);
     ui->textView->setScene(new QGraphicsScene());
     ui->textView->scene()->addItem(gameMovesTextField);
 

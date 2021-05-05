@@ -1,6 +1,5 @@
 #include "chesspiece.h"
 #include "checker.h"
-#include "game.h"
 #include <iostream>
 
 
@@ -73,8 +72,6 @@ Queen::Queen(bool color, int xPos, int yPos)
         this->imagePath = QString(":/images/queen_black.svg");
     this->setPixmap(QPixmap(this->imagePath));
     this->setOffset(xPos * SCALE, yPos * SCALE);
-
-    //std::cout << "hey, i am queen and i have " << this->name.toUtf8().constData() << " name!" << std::endl;
 }
 
 void Queen::possibleMoves()

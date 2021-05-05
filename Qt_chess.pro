@@ -13,7 +13,6 @@ SOURCES += \
     button.cpp \
     checker.cpp \
     chesspiece.cpp \
-    dialog.cpp \
     main.cpp \
     chess.cpp
 
@@ -22,12 +21,10 @@ HEADERS += \
     button.h \
     checker.h \
     chess.h \
-    chesspiece.h \
-    dialog.h
+    chesspiece.h
 
 FORMS += \
-    chess.ui \
-    dialog.ui
+    chess.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
